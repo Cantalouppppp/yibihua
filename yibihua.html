@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一笔画探险营地 - 修正版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
+        
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --accent: #FFE66D;
+            --bg: #F7FFF7;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'ZCOOL KuaiLe', cursive, sans-serif;
+            background-color: var(--bg);
+            color: #2F3E46;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .workbook-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 50px;
+            padding: 40px;
+            box-shadow: 0 20px 0px rgba(0,0,0,0.05);
+            border: 8px solid #E9F5DB;
+        }
+
+        h1 {
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 3.5rem;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .nav-tab {
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            background: #f0f0f0;
+            border: none;
+            color: #888;
+        }
+
+        .nav-tab.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 6px 0 #D64545;
+            transform: translateY(-4px);
+        }
+
+        .canvas-box {
+            background: #FFFFFF;
+            border: 5px dashed #CAD2C5;
+            border-radius: 40px;
+            margin: 20px 0;
+            position: relative;
+            touch-action: none;
+            overflow: hidden;
+        }
+
+        .question-box {
+            background: #F1FAEE;
+            padding: 25px;
+            border-radius: 30px;
+            font-size: 1.6rem;
+            line-height: 2.5;
+        }
+
+        select {
+            appearance: none;
+            background: #FFF;
+            border: 3px solid var(--secondary);
+            border-radius: 12px;
+            padding: 2px 10px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary);
+            cursor: pointer;
+            outline: none;
+            margin: 0 5px;
+            text-align: center;
+        }
+
+        .is-correct { background-color: #C1E1C1 !important; border-color: #77DD77 !important; color: #166534 !important; }
+        .is-wrong { background-color: #FFB7B2 !important; border-color: #FF6B6B !important; color: #991B1B !important; }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 12px;
+            font-size: 1.1rem;
+        }
+
+        th { padding: 10px; color: #666; font-weight: bold; text-align: center; font-size: 1.3rem; }
+        td { 
+            background: #FFF; 
+            padding: 10px; 
+            text-align: center; 
+            border-top: 3px solid #F1F1F1;
+            border-bottom: 3px solid #F1F1F1;
+            vertical-align: middle;
+        }
+        td:first-child { border-left: 3px solid #F1F1F1; border-radius: 20px 0 0 20px; width: 180px; }
+        td:last-child { border-right: 3px solid #F1F1F1; border-radius: 0 20px 20px 0; }
+
+        .mini-canvas {
+            background: #fafafa;
+            border-radius: 15px;
+            border: 2px solid #eee;
+        }
+
+        .btn-reset {
+            background: var(--secondary);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            border: none;
+            box-shadow: 0 4px 0 #3BAEA5;
+            cursor: pointer;
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="workbook-container">
+    <h1>一笔画大探险</h1>
+
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="showTask(1)">第一关</button>
+        <button class="nav-tab" onclick="showTask(2)">第二关</button>
+        <button class="nav-tab" onclick="showTask(3)">第三关</button>
+    </div>
+
+    <!-- 任务一 -->
+    <div id="task1">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold text-gray-700">任务 1：观察跑道图</h2>
+            <div class="flex gap-2 items-center">
+                <button onclick="setMode1(1)" id="m1_1" class="px-4 py-2 rounded-lg bg-red-400 text-white font-bold">图形1</button>
+                <button onclick="setMode1(2)" id="m1_2" class="px-4 py-2 rounded-lg bg-gray-200 font-bold">图形2</button>
+                <button class="btn-reset ml-2" onclick="resetTask1()">清空画布</button>
+            </div>
+        </div>
+        <div class="canvas-box">
+            <canvas id="canvas1" width="900" height="400"></canvas>
+        </div>
+        <div id="q1_content" class="question-box mt-6">
+            <!-- 动态更新内容 -->
+        </div>
+    </div>
+
+    <!-- 任务二 -->
+    <div id="task2" class="hidden">
+        <h2 class="text-2xl font-bold mb-4 text-gray-700">任务 2：实验记录表</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>图形形状</th>
+                    <th>奇点个数</th>
+                    <th>能否一笔画</th>
+                    <th>起点与终点关系</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- 动态生成 -->
+            </tbody>
+        </table>
+        <div class="question-box mt-4 bg-yellow-50 border-4 border-yellow-200">
+            <strong>规律发现：</strong><br>
+            1. 图形中奇点个数为 
+            <select onchange="check(this, '0或2')">
+                <option value="">选择</option>
+                <option value="0">0个</option>
+                <option value="2">2个</option>
+                <option value="0或2">0个或2个</option>
+                <option value="4">4个</option>
+            </select> 个时，图形 
+            <select onchange="check(this, '可以')">
+                <option value="">选择</option>
+                <option value="可以">可以</option>
+                <option value="不可以">不可以</option>
+            </select> 一笔画完。<br>
+            2. 其他情况下，图形 
+            <select onchange="check(this, '不可以')">
+                <option value="">选择</option>
+                <option value="可以">可以</option>
+                <option value="不可以">不可以</option>
+            </select> 一笔画完。
+        </div>
+    </div>
+
+    <!-- 任务三 -->
+    <div id="task3" class="hidden">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold text-gray-700">任务 3：水乡小镇几何化 (修正)</h2>
+            <button class="btn-reset" onclick="resetTask3()">清空画布</button>
+        </div>
+        <div class="canvas-box">
+            <canvas id="canvas3" width="900" height="500"></canvas>
+        </div>
+        <div class="question-box mt-6">
+            <p>1. 在简化的几何图形中，奇点有 
+                <select onchange="check(this, '4')"><option value="">?</option><option value="0">0</option><option value="2">2</option><option value="4">4</option></select> 
+                个（点 A, B, D, G），偶点有 
+                <select onchange="check(this, '3')"><option value="">?</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select> 个。
+            </p>
+            <p>2. 该图形 
+                <select onchange="check(this, '不能')"><option value="">?</option><option value="能">能</option><option value="不能">不能</option></select> 一笔画成。
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentTask = 1;
+    let mode1 = 1;
+    let usedEdges = [];
+    let isDrawing = false;
+    let lastNode = null;
+
+    function showTask(n) {
+        currentTask = n;
+        document.getElementById('task1').classList.toggle('hidden', n !== 1);
+        document.getElementById('task2').classList.toggle('hidden', n !== 2);
+        document.getElementById('task3').classList.toggle('hidden', n !== 3);
+        
+        document.querySelectorAll('.nav-tab').forEach((btn, i) => {
+            btn.classList.toggle('active', i + 1 === n);
+        });
+
+        usedEdges = [];
+        if (n === 1) initTask1();
+        if (n === 2) initTask2();
+        if (n === 3) initTask3();
+    }
+
+    // --- 任务一 ---
+    function initTask1() {
+        const cvs = document.getElementById('canvas1');
+        const qBox = document.getElementById('q1_content');
+        const nodes = {
+            'A': { x: 150, y: 200 },
+            'B': { x: 750, y: 200 },
+            'D': { x: 450, y: 200 },
+            'C': { x: 450, y: 80 },
+            'E': { x: 600, y: 320 },
+            '_L1': { x: 200, y: 80 }, '_R1': { x: 700, y: 80 },
+            '_L2': { x: 200, y: 320 }, '_R2': { x: 700, y: 320 }
+        };
+        const edges = [
+            { id: 1, u:'_L1', v:'C' }, { id: 2, u:'C', v:'_R1' },
+            { id: 3, u:'_L2', v:'E' }, { id: 4, u:'E', v:'_R2' },
+            { id: 5, u:'A', v:'D' }, { id: 6, u:'D', v:'B' },
+            { id: 7, u:'_L1', v:'A' }, { id: 8, u:'A', v:'_L2' },
+            { id: 9, u:'_R1', v:'B' }, { id: 10, u:'B', v:'_R2' }
+        ];
+
+        if (mode1 === 1) {
+            qBox.innerHTML = `
+                <p>1. 观察图形，点 C 连了 <select onchange="check(this, '2')"><option value="">?</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select> 条线，它是 <select onchange="check(this, '偶点')"><option value="">?</option><option value="奇点">奇点</option><option value="偶点">偶点</option></select>。</p>
+                <p>2. 点 A 连了 <select onchange="check(this, '3')"><option value="">?</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select> 条线，它是 <select onchange="check(this, '奇点')"><option value="">?</option><option value="奇点">奇点</option><option value="偶点">偶点</option></select>。</p>
+                <p>3. 该图共有 <select onchange="check(this, '2')"><option value="">?</option><option value="0">0</option><option value="2">2</option><option value="4">4</option></select> 个奇点，它 <select onchange="check(this, '能')"><option value="">?</option><option value="能">能</option><option value="不能">不能</option></select> 一笔画完。</p>
+            `;
+        } else {
+            edges.push({ id: 11, u:'D', v:'E' });
+            qBox.innerHTML = `
+                <p>1. 在图形2中，点 D 的连接数变为了 <select onchange="check(this, '3')"><option value="">?</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>，变成了奇点。</p>
+                <p>2. 统计发现，图形2共有 <select onchange="check(this, '4')"><option value="">?</option><option value="2">2</option><option value="4">4</option><option value="6">6</option></select> 个奇点 (A, B, D, E)。</p>
+                <p>3. 因此，图形2 <select onchange="check(this, '不能')"><option value="">?</option><option value="能">能</option><option value="不能">不能</option></select> 一笔画完。</p>
+            `;
+        }
+        setupCanvasInteraction(cvs, nodes, edges, true);
+    }
+
+    function setMode1(m) {
+        mode1 = m;
+        document.getElementById('m1_1').className = m === 1 ? 'px-4 py-2 rounded-lg bg-red-400 text-white font-bold' : 'px-4 py-2 rounded-lg bg-gray-200 font-bold';
+        document.getElementById('m1_2').className = m === 2 ? 'px-4 py-2 rounded-lg bg-red-400 text-white font-bold' : 'px-4 py-2 rounded-lg bg-gray-200 font-bold';
+        resetTask1();
+    }
+
+    // --- 任务二 ---
+    function initTask2() {
+        const tableBody = document.getElementById('tableBody');
+        const items = [
+            { id: 't1', odd: '2', can: '能', relation: '不同点', draw: (ctx) => {
+                ctx.moveTo(40, 50); ctx.lineTo(160, 50);
+                ctx.arc(40, 50, 4, 0, Math.PI*2); ctx.arc(160, 50, 4, 0, Math.PI*2);
+            }},
+            { id: 't2', odd: '0', can: '能', relation: '同一点', draw: (ctx) => {
+                ctx.moveTo(100, 20); ctx.lineTo(150, 80); ctx.lineTo(50, 80); ctx.closePath();
+            }},
+            { id: 't3', odd: '0', can: '能', relation: '同一点', draw: (ctx) => {
+                ctx.rect(65, 15, 70, 70);
+            }},
+            { id: 't4', odd: '2', can: '能', relation: '不同点', draw: (ctx) => {
+                ctx.rect(60, 15, 80, 70);
+                ctx.moveTo(100, 15); ctx.lineTo(100, 85);
+            }},
+            { id: 't5', odd: '4', can: '不能', relation: '无', draw: (ctx) => {
+                ctx.rect(50, 20, 100, 60);
+                ctx.moveTo(83, 20); ctx.lineTo(83, 80);
+                ctx.moveTo(116, 20); ctx.lineTo(116, 80);
+            }},
+            { id: 't6', odd: '6', can: '不能', relation: '无', draw: (ctx) => {
+                ctx.rect(40, 20, 120, 60);
+                ctx.moveTo(70, 20); ctx.lineTo(70, 80);
+                ctx.moveTo(100, 20); ctx.lineTo(100, 80);
+                ctx.moveTo(130, 20); ctx.lineTo(130, 80);
+            }}
+        ];
+        tableBody.innerHTML = items.map(item => `
+            <tr>
+                <td><canvas id="mini_${item.id}" class="mini-canvas" width="200" height="100"></canvas></td>
+                <td><select onchange="check(this, '${item.odd}')"><option value="">?</option><option value="0">0</option><option value="2">2</option><option value="4">4</option><option value="6">6</option></select></td>
+                <td><select onchange="check(this, '${item.can}')"><option value="">?</option><option value="能">能</option><option value="不能">不能</option></select></td>
+                <td><select onchange="check(this, '${item.relation}')"><option value="">?</option><option value="同一点">同一点</option><option value="不同点">不同点</option><option value="无">无</option></select></td>
+            </tr>
+        `).join('');
+        items.forEach(item => {
+            const ctx = document.getElementById(`mini_${item.id}`).getContext('2d');
+            ctx.strokeStyle = '#444'; ctx.lineWidth = 4; ctx.lineJoin = 'round';
+            ctx.beginPath(); item.draw(ctx); ctx.stroke();
+        });
+    }
+
+    // --- 任务三 ---
+    function initTask3() {
+        const cvs = document.getElementById('canvas3');
+        const nodes = {
+            'E': { x: 350, y: 50 },
+            'D': { x: 250, y: 150 },
+            'F': { x: 450, y: 160 },
+            'G': { x: 650, y: 155 },
+            'C': { x: 150, y: 350 },
+            'B': { x: 450, y: 360 },
+            'A': { x: 800, y: 355 }
+        };
+        const mapEdges = [
+            { id: 1, u: 'E', v: 'D' }, { id: 2, u: 'E', v: 'F' },
+            { id: 3, u: 'D', v: 'F' }, { id: 4, u: 'F', v: 'G' },
+            { id: 5, u: 'D', v: 'C' }, { id: 6, u: 'C', v: 'B' },
+            { id: 7, u: 'B', v: 'G' }, { id: 8, u: 'B', v: 'A' }
+        ];
+        setupCanvasInteraction(cvs, nodes, mapEdges, false);
+    }
+
+    function setupCanvasInteraction(cvs, nodes, edges, hidePrefix) {
+        const ctx = cvs.getContext('2d');
+        function render() {
+            ctx.clearRect(0, 0, cvs.width, cvs.height);
+            edges.forEach(e => {
+                ctx.beginPath();
+                ctx.strokeStyle = usedEdges.includes(e.id) ? '#FF6B6B' : '#E2E8F0';
+                ctx.lineWidth = usedEdges.includes(e.id) ? 22 : 12;
+                ctx.lineCap = 'round';
+                ctx.moveTo(nodes[e.u].x, nodes[e.u].y);
+                ctx.lineTo(nodes[e.v].x, nodes[e.v].y);
+                ctx.stroke();
+            });
+            Object.entries(nodes).forEach(([id, pos]) => {
+                const isHidden = hidePrefix && id.startsWith('_');
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, isHidden ? 6 : 20, 0, Math.PI * 2);
+                const deg = edges.filter(e => e.u === id || e.v === id).length;
+                let color = (deg % 2 !== 0) ? '#FF6B6B' : '#4ECDC4';
+                if (usedEdges.some(eid => edges.find(ed=>ed.id===eid && (ed.u===id || ed.v===id)))) {
+                   color = (deg % 2 !== 0) ? '#D64545' : '#3BAEA5';
+                }
+                ctx.fillStyle = isHidden ? '#E2E8F0' : color;
+                ctx.fill();
+                if (!isHidden) {
+                    ctx.fillStyle = '#FFF'; ctx.font = 'bold 18px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                    ctx.fillText(id, pos.x, pos.y);
+                }
+            });
+        }
+
+        const handleMove = (ex, ey) => {
+            const rect = cvs.getBoundingClientRect();
+            const x = ex - rect.left; const y = ey - rect.top;
+            const hit = Object.keys(nodes).find(k => Math.hypot(nodes[k].x - x, nodes[k].y - y) < 40);
+            if (hit && hit !== lastNode) {
+                if (lastNode === null) lastNode = hit;
+                else {
+                    const edge = edges.find(ed => !usedEdges.includes(ed.id) && 
+                        ((ed.u === lastNode && ed.v === hit) || (ed.v === lastNode && ed.u === hit)));
+                    if (edge) { usedEdges.push(edge.id); lastNode = hit; render(); }
+                }
+            }
+        };
+        cvs.onmousedown = (e) => { isDrawing = true; handleMove(e.clientX, e.clientY); };
+        cvs.ontouchstart = (e) => { isDrawing = true; handleMove(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); };
+        cvs.onmousemove = (e) => { if(isDrawing) handleMove(e.clientX, e.clientY); };
+        cvs.ontouchmove = (e) => { if(isDrawing) handleMove(e.touches[0].clientX, e.touches[0].clientY); };
+        window.onmouseup = window.ontouchend = () => { isDrawing = false; lastNode = null; };
+        render();
+    }
+
+    function check(el, correct) {
+        if (el.value === correct) el.className = 'is-correct';
+        else if (el.value === "") el.className = "";
+        else el.className = 'is-wrong';
+    }
+
+    function resetTask1() { usedEdges = []; initTask1(); }
+    function resetTask3() { usedEdges = []; initTask3(); }
+    window.onload = () => showTask(1);
+</script>
+</body>
+</html>
