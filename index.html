@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>一笔画探险营</title>
+    <title>一笔画探险营地</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
@@ -16,29 +16,44 @@
         }
 
         body {
-            font-family: 'Comic Sans MS', 'ZCOOL KuaiLe', cursive, sans-serif;
+            font-family: 'PingFang SC', 'Microsoft YaHei', 'ZCOOL KuaiLe', cursive, sans-serif;
             background-color: var(--bg);
             color: #2F3E46;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-title {
+            width: 100%;
+            text-align: center;
+            padding: 60px 20px 40px 20px;
+            background: transparent;
+        }
+
+        h1 {
+            font-family: 'ZCOOL KuaiLe', 'Microsoft YaHei', sans-serif !important;
+            font-size: 6rem !important;
+            font-weight: 900 !important;
+            color: var(--primary) !important;
+            margin: 0 !important;
+            text-shadow: 12px 12px 0px rgba(255, 107, 107, 0.15);
+            letter-spacing: 12px;
+            line-height: 1;
+            white-space: nowrap;
         }
 
         .workbook-container {
             max-width: 1000px;
-            margin: 0 auto;
+            width: 95%;
+            margin: 20px auto 60px auto;
             background: white;
             border-radius: 50px;
             padding: 40px;
             box-shadow: 0 20px 0px rgba(0,0,0,0.05);
             border: 8px solid #E9F5DB;
-        }
-
-        h1 {
-            font-family: 'ZCOOL KuaiLe', cursive;
-            font-size: 3.5rem;
-            color: var(--primary);
-            text-align: center;
-            margin-bottom: 30px;
         }
 
         .nav-tabs {
@@ -51,7 +66,7 @@
         .nav-tab {
             padding: 12px 30px;
             border-radius: 25px;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
@@ -81,22 +96,25 @@
             background: #F1FAEE;
             padding: 25px;
             border-radius: 30px;
-            font-size: 1.6rem;
-            line-height: 2.5;
+            font-size: 1.4rem;
+            line-height: 2.2;
+        }
+
+        select, input, textarea {
+            appearance: none;
+            background: #FFF;
+            border: 2px solid var(--secondary);
+            border-radius: 8px;
+            padding: 4px 8px;
+            font-size: 1.1rem;
+            outline: none;
+            color: #2F3E46;
         }
 
         select {
-            appearance: none;
-            background: #FFF;
-            border: 3px solid var(--secondary);
-            border-radius: 12px;
-            padding: 2px 10px;
-            font-size: 1.4rem;
             font-weight: bold;
             color: var(--primary);
             cursor: pointer;
-            outline: none;
-            margin: 0 5px;
             text-align: center;
         }
 
@@ -107,10 +125,9 @@
             width: 100%;
             border-collapse: separate;
             border-spacing: 0 12px;
-            font-size: 1.1rem;
         }
 
-        th { padding: 10px; color: #666; font-weight: bold; text-align: center; font-size: 1.3rem; }
+        th { padding: 10px; color: #666; font-weight: bold; text-align: center; font-size: 1.2rem; }
         td { 
             background: #FFF; 
             padding: 10px; 
@@ -139,14 +156,39 @@
             cursor: pointer;
         }
 
+        .challenge-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+        }
+        .challenge-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
         .hidden { display: none; }
+
+        .mode-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f8fafc;
+            padding: 8px 16px;
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 4rem !important; }
+        }
     </style>
 </head>
 <body>
 
-<div class="workbook-container">
+<div class="hero-title">
     <h1>一笔画大探险</h1>
+</div>
 
+<div class="workbook-container">
     <div class="nav-tabs">
         <button class="nav-tab active" onclick="showTask(1)">第一关</button>
         <button class="nav-tab" onclick="showTask(2)">第二关</button>
@@ -158,17 +200,15 @@
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-2xl font-bold text-gray-700">任务 1：观察简化图</h2>
             <div class="flex gap-2 items-center">
-                <button onclick="setMode1(1)" id="m1_1" class="px-4 py-2 rounded-lg bg-red-400 text-white font-bold">图形1</button>
-                <button onclick="setMode1(2)" id="m1_2" class="px-4 py-2 rounded-lg bg-gray-200 font-bold">图形2</button>
+                <button onclick="setMode1(1)" id="btnMode1" class="px-4 py-2 rounded-lg bg-red-400 text-white font-bold transition-colors">图形1</button>
+                <button onclick="setMode1(2)" id="btnMode2" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-600 font-bold transition-colors">图形2</button>
                 <button class="btn-reset ml-2" onclick="resetTask1()">清空画布</button>
             </div>
         </div>
         <div class="canvas-box">
             <canvas id="canvas1" width="900" height="400"></canvas>
         </div>
-        <div id="q1_content" class="question-box mt-6">
-            <!-- 动态更新内容 -->
-        </div>
+        <div id="q1_content" class="question-box mt-6"></div>
     </div>
 
     <!-- 任务二 -->
@@ -183,9 +223,7 @@
                     <th>起点与终点关系</th>
                 </tr>
             </thead>
-            <tbody id="tableBody">
-                <!-- 动态生成 -->
-            </tbody>
+            <tbody id="tableBody"></tbody>
         </table>
         <div class="question-box mt-4 bg-yellow-50 border-4 border-yellow-200">
             <strong>规律发现：</strong><br>
@@ -213,22 +251,82 @@
 
     <!-- 任务三 -->
     <div id="task3" class="hidden">
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-2xl font-bold text-gray-700">任务 3：水乡小镇几何化 (修正)</h2>
-            <button class="btn-reset" onclick="resetTask3()">清空画布</button>
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
+            <h2 class="text-2xl font-bold text-gray-700">任务 3：水乡小镇几何化</h2>
+            <div class="flex flex-wrap gap-2">
+                <div class="mode-toggle">
+                    <span class="text-sm font-bold text-gray-600">操作模式:</span>
+                    <button id="drawModeBtn" onclick="toggleTask3Mode('draw')" class="px-3 py-1 rounded bg-red-400 text-white text-sm font-bold">✍️ 游览路线</button>
+                    <button id="buildModeBtn" onclick="toggleTask3Mode('build')" class="px-3 py-1 rounded bg-gray-200 text-gray-600 text-sm font-bold">🏗️ 规划建桥</button>
+                </div>
+                <button class="btn-reset" onclick="resetTask3()">重置关卡</button>
+            </div>
         </div>
         <div class="canvas-box">
             <canvas id="canvas3" width="900" height="500"></canvas>
+            <div id="buildHint" class="hidden absolute top-4 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-4 py-1 rounded-full text-sm animate-bounce shadow-lg">
+                规划模式：点击两个点来“修建”新桥
+            </div>
         </div>
         <div class="question-box mt-6">
             <p>1. 在简化的几何图形中，奇点有 
                 <select onchange="check(this, '4')"><option value="">?</option><option value="0">0</option><option value="2">2</option><option value="4">4</option></select> 
-                个（点 A, B, D, G），偶点有 
+                个，偶点有 
                 <select onchange="check(this, '3')"><option value="">?</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select> 个。
             </p>
             <p>2. 该图形 
                 <select onchange="check(this, '不能')"><option value="">?</option><option value="能">能</option><option value="不能">不能</option></select> 一笔画成。
             </p>
+        </div>
+        
+        <p class="mt-12 text-center text-red-500 font-bold text-2xl animate-pulse">
+            🚀 挑战升级任务卡
+        </p>
+
+        <div id="challengeCards" class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="challenge-card bg-blue-50 border-2 border-blue-200 rounded-3xl p-6 shadow-sm flex flex-col">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-3xl">🏗️</span>
+                    <h3 class="text-blue-700 font-bold text-xl">建筑师卡</h3>
+                </div>
+                <p class="text-gray-700 text-sm leading-relaxed mb-4">
+                    切换到<strong>“规划建桥”</strong>模式，增建一座桥，使全图可以一笔画。
+                </p>
+                <div class="mt-auto space-y-2">
+                    <label class="text-xs font-bold text-blue-600">你的设计（桥连接哪两点）：</label>
+                    <input type="text" id="bridgeInput" class="w-full text-sm" placeholder="例如：A 和 G">
+                    <p class="text-[10px] text-gray-500 italic">建好后切回“游览路线”模式验证！</p>
+                </div>
+            </div>
+            
+            <div class="challenge-card bg-orange-50 border-2 border-orange-200 rounded-3xl p-6 shadow-sm flex flex-col">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-3xl">🗺️</span>
+                    <h3 class="text-orange-700 font-bold text-xl">规划师卡</h3>
+                </div>
+                <p class="text-gray-700 text-sm leading-relaxed mb-4">
+                    <strong>增建一座桥</strong>，要求入口在 <strong>A点</strong>、出口在 <strong>F点</strong>。
+                </p>
+                <div class="mt-auto space-y-2">
+                    <label class="text-xs font-bold text-orange-600">路线序列：</label>
+                    <textarea class="w-full text-sm h-20" placeholder="例如：A→B→G→...→F"></textarea>
+                </div>
+            </div>
+
+            <div class="challenge-card bg-purple-50 border-2 border-purple-200 rounded-3xl p-6 shadow-sm flex flex-col">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-3xl">🎨</span>
+                    <h3 class="text-purple-700 font-bold text-xl">创意总监卡</h3>
+                </div>
+                <div class="text-gray-700 text-sm leading-relaxed mb-4 space-y-2">
+                    <p>① 完成规划师卡要求；</p>
+                    <p>② 为新桥起个<strong>水乡韵味</strong>的名字及广告语。</p>
+                </div>
+                <div class="mt-auto space-y-2">
+                    <input type="text" class="w-full text-sm mb-1" placeholder="桥名：如‘映月桥’">
+                    <textarea class="w-full text-sm h-16" placeholder="广告语：如‘走过此桥，梦回水乡’"></textarea>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -236,36 +334,45 @@
 <script>
     let currentTask = 1;
     let mode1 = 1;
+    let task3Mode = 'draw';
     let usedEdges = [];
+    let customEdges = [];
     let isDrawing = false;
     let lastNode = null;
+    let buildStartNode = null;
 
     function showTask(n) {
         currentTask = n;
         document.getElementById('task1').classList.toggle('hidden', n !== 1);
         document.getElementById('task2').classList.toggle('hidden', n !== 2);
         document.getElementById('task3').classList.toggle('hidden', n !== 3);
+        document.querySelectorAll('.nav-tab').forEach((btn, i) => btn.classList.toggle('active', i + 1 === n));
         
-        document.querySelectorAll('.nav-tab').forEach((btn, i) => {
-            btn.classList.toggle('active', i + 1 === n);
-        });
-
         usedEdges = [];
+        customEdges = [];
         if (n === 1) initTask1();
         if (n === 2) initTask2();
         if (n === 3) initTask3();
     }
 
-    // --- 任务一 ---
     function initTask1() {
         const cvs = document.getElementById('canvas1');
         const qBox = document.getElementById('q1_content');
+        
+        // 更新按钮颜色
+        const btn1 = document.getElementById('btnMode1');
+        const btn2 = document.getElementById('btnMode2');
+        if (mode1 === 1) {
+            btn1.className = "px-4 py-2 rounded-lg bg-red-400 text-white font-bold transition-colors";
+            btn2.className = "px-4 py-2 rounded-lg bg-gray-200 text-gray-600 font-bold transition-colors";
+        } else {
+            btn1.className = "px-4 py-2 rounded-lg bg-gray-200 text-gray-600 font-bold transition-colors";
+            btn2.className = "px-4 py-2 rounded-lg bg-red-400 text-white font-bold transition-colors";
+        }
+
         const nodes = {
-            'A': { x: 150, y: 200 },
-            'B': { x: 750, y: 200 },
-            'D': { x: 450, y: 200 },
-            'C': { x: 450, y: 80 },
-            'E': { x: 600, y: 320 },
+            'A': { x: 150, y: 200 }, 'B': { x: 750, y: 200 }, 'D': { x: 450, y: 200 },
+            'C': { x: 450, y: 80 }, 'E': { x: 600, y: 320 },
             '_L1': { x: 200, y: 80 }, '_R1': { x: 700, y: 80 },
             '_L2': { x: 200, y: 320 }, '_R2': { x: 700, y: 320 }
         };
@@ -279,142 +386,137 @@
 
         if (mode1 === 1) {
             qBox.innerHTML = `
-                <p>1. 观察图形，点 C 连了 <select onchange="check(this, '2')"><option value="">?</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select> 条线，它是 <select onchange="check(this, '偶点')"><option value="">?</option><option value="奇点">奇点</option><option value="偶点">偶点</option></select>。</p>
+                <p>1. 点 C 连了 <select onchange="check(this, '2')"><option value="">?</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select> 条线，它是 <select onchange="check(this, '偶点')"><option value="">?</option><option value="奇点">奇点</option><option value="偶点">偶点</option></select>。</p>
                 <p>2. 点 A 连了 <select onchange="check(this, '3')"><option value="">?</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select> 条线，它是 <select onchange="check(this, '奇点')"><option value="">?</option><option value="奇点">奇点</option><option value="偶点">偶点</option></select>。</p>
                 <p>3. 该图共有 <select onchange="check(this, '2')"><option value="">?</option><option value="0">0</option><option value="2">2</option><option value="4">4</option></select> 个奇点，它 <select onchange="check(this, '能')"><option value="">?</option><option value="能">能</option><option value="不能">不能</option></select> 一笔画完。</p>
             `;
         } else {
             edges.push({ id: 11, u:'D', v:'E' });
             qBox.innerHTML = `
-                <p>1. 在图形2中，点 D 的连接数变为了 <select onchange="check(this, '3')"><option value="">?</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>，变成了奇点。</p>
-                <p>2. 统计发现，图形2共有 <select onchange="check(this, '4')"><option value="">?</option><option value="2">2</option><option value="4">4</option><option value="6">6</option></select> 个奇点 (A, B, D, E)。</p>
+                <p>1. 图形2中，点 D 的连接数变为了 <select onchange="check(this, '3')"><option value="">?</option><option value="2">2</option><option value="3">3</option></select>，变成了奇点。</p>
+                <p>2. 图形2共有 <select onchange="check(this, '4')"><option value="">?</option><option value="2">2</option><option value="4">4</option></select> 个奇点 。</p>
                 <p>3. 因此，图形2 <select onchange="check(this, '不能')"><option value="">?</option><option value="能">能</option><option value="不能">不能</option></select> 一笔画完。</p>
             `;
         }
         setupCanvasInteraction(cvs, nodes, edges, true);
     }
 
-    function setMode1(m) {
-        mode1 = m;
-        document.getElementById('m1_1').className = m === 1 ? 'px-4 py-2 rounded-lg bg-red-400 text-white font-bold' : 'px-4 py-2 rounded-lg bg-gray-200 font-bold';
-        document.getElementById('m1_2').className = m === 2 ? 'px-4 py-2 rounded-lg bg-red-400 text-white font-bold' : 'px-4 py-2 rounded-lg bg-gray-200 font-bold';
-        resetTask1();
-    }
+    function setMode1(m) { mode1 = m; usedEdges = []; initTask1(); }
 
-    // --- 任务二 ---
     function initTask2() {
         const tableBody = document.getElementById('tableBody');
         const items = [
-            { id: 't1', odd: '2', can: '能', relation: '不同点', draw: (ctx) => {
-                ctx.moveTo(40, 50); ctx.lineTo(160, 50);
-                ctx.arc(40, 50, 4, 0, Math.PI*2); ctx.arc(160, 50, 4, 0, Math.PI*2);
-            }},
-            { id: 't2', odd: '0', can: '能', relation: '同一点', draw: (ctx) => {
-                ctx.moveTo(100, 20); ctx.lineTo(150, 80); ctx.lineTo(50, 80); ctx.closePath();
-            }},
-            { id: 't3', odd: '0', can: '能', relation: '同一点', draw: (ctx) => {
-                ctx.rect(65, 15, 70, 70);
-            }},
-            { id: 't4', odd: '2', can: '能', relation: '不同点', draw: (ctx) => {
-                ctx.rect(60, 15, 80, 70);
-                ctx.moveTo(100, 15); ctx.lineTo(100, 85);
-            }},
-            { id: 't5', odd: '4', can: '不能', relation: '无', draw: (ctx) => {
-                ctx.rect(50, 20, 100, 60);
-                ctx.moveTo(83, 20); ctx.lineTo(83, 80);
-                ctx.moveTo(116, 20); ctx.lineTo(116, 80);
-            }},
-            { id: 't6', odd: '6', can: '不能', relation: '无', draw: (ctx) => {
-                ctx.rect(40, 20, 120, 60);
-                ctx.moveTo(70, 20); ctx.lineTo(70, 80);
-                ctx.moveTo(100, 20); ctx.lineTo(100, 80);
-                ctx.moveTo(130, 20); ctx.lineTo(130, 80);
-            }}
+            { id: 't1', odd: '2', can: '能', relation: '不同点', draw: (ctx) => { ctx.moveTo(40, 50); ctx.lineTo(160, 50); ctx.arc(40, 50, 4, 0, Math.PI*2); ctx.arc(160, 50, 4, 0, Math.PI*2); }},
+            { id: 't2', odd: '0', can: '能', relation: '同一点', draw: (ctx) => { ctx.moveTo(100, 20); ctx.lineTo(150, 80); ctx.lineTo(50, 80); ctx.closePath(); }},
+            { id: 't3', odd: '0', can: '能', relation: '同一点', draw: (ctx) => { ctx.rect(65, 15, 70, 70); }},
+            { id: 't4', odd: '2', can: '能', relation: '不同点', draw: (ctx) => { ctx.rect(60, 15, 80, 70); ctx.moveTo(100, 15); ctx.lineTo(100, 85); }},
+            { id: 't5', odd: '4', can: '不能', relation: '无', draw: (ctx) => { ctx.rect(50, 20, 100, 60); ctx.moveTo(83, 20); ctx.lineTo(83, 80); ctx.moveTo(116, 20); ctx.lineTo(116, 80); }},
+            { id: 't6', odd: '6', can: '不能', relation: '无', draw: (ctx) => { ctx.rect(40, 20, 120, 60); ctx.moveTo(70, 20); ctx.lineTo(70, 80); ctx.moveTo(100, 20); ctx.lineTo(100, 80); ctx.moveTo(130, 20); ctx.lineTo(130, 80); }}
         ];
         tableBody.innerHTML = items.map(item => `
             <tr>
                 <td><canvas id="mini_${item.id}" class="mini-canvas" width="200" height="100"></canvas></td>
-                <td><select onchange="check(this, '${item.odd}')"><option value="">?</option><option value="0">0</option><option value="2">2</option><option value="4">4</option><option value="6">6</option></select></td>
+                <td><select onchange="check(this, '${item.odd}')"><option value="">?</option><option value="0">0</option><option value="2">2</option><option value="4">4</option></select></td>
                 <td><select onchange="check(this, '${item.can}')"><option value="">?</option><option value="能">能</option><option value="不能">不能</option></select></td>
                 <td><select onchange="check(this, '${item.relation}')"><option value="">?</option><option value="同一点">同一点</option><option value="不同点">不同点</option><option value="无">无</option></select></td>
             </tr>
         `).join('');
         items.forEach(item => {
             const ctx = document.getElementById(`mini_${item.id}`).getContext('2d');
-            ctx.strokeStyle = '#444'; ctx.lineWidth = 4; ctx.lineJoin = 'round';
-            ctx.beginPath(); item.draw(ctx); ctx.stroke();
+            ctx.strokeStyle = '#444'; ctx.lineWidth = 4; ctx.beginPath(); item.draw(ctx); ctx.stroke();
         });
     }
 
-    // --- 任务三 ---
     function initTask3() {
         const cvs = document.getElementById('canvas3');
         const nodes = {
-            'E': { x: 350, y: 50 },
-            'D': { x: 250, y: 150 },
-            'F': { x: 450, y: 160 },
-            'G': { x: 650, y: 155 },
-            'C': { x: 150, y: 350 },
-            'B': { x: 450, y: 360 },
-            'A': { x: 800, y: 355 }
+            'E': { x: 350, y: 50 }, 'D': { x: 250, y: 150 }, 'F': { x: 450, y: 160 }, 'G': { x: 650, y: 155 },
+            'C': { x: 150, y: 350 }, 'B': { x: 450, y: 360 }, 'A': { x: 800, y: 355 }
         };
         const mapEdges = [
-            { id: 1, u: 'E', v: 'D' }, { id: 2, u: 'E', v: 'F' },
-            { id: 3, u: 'D', v: 'F' }, { id: 4, u: 'F', v: 'G' },
-            { id: 5, u: 'D', v: 'C' }, { id: 6, u: 'C', v: 'B' },
-            { id: 7, u: 'B', v: 'G' }, { id: 8, u: 'B', v: 'A' }
+            { id: 1, u: 'E', v: 'D' }, { id: 2, u: 'E', v: 'F' }, { id: 3, u: 'D', v: 'F' }, { id: 4, u: 'F', v: 'G' },
+            { id: 5, u: 'D', v: 'C' }, { id: 6, u: 'C', v: 'B' }, { id: 7, u: 'B', v: 'G' }, { id: 8, u: 'B', v: 'A' }
         ];
         setupCanvasInteraction(cvs, nodes, mapEdges, false);
     }
 
+    function toggleTask3Mode(m) {
+        task3Mode = m;
+        document.getElementById('drawModeBtn').className = m === 'draw' ? 'px-3 py-1 rounded bg-red-400 text-white text-sm font-bold' : 'px-3 py-1 rounded bg-gray-200 text-gray-600 text-sm font-bold';
+        document.getElementById('buildModeBtn').className = m === 'build' ? 'px-3 py-1 rounded bg-blue-600 text-white text-sm font-bold' : 'px-3 py-1 rounded bg-gray-200 text-gray-600 text-sm font-bold';
+        document.getElementById('buildHint').classList.toggle('hidden', m !== 'build');
+        buildStartNode = null;
+    }
+
     function setupCanvasInteraction(cvs, nodes, edges, hidePrefix) {
         const ctx = cvs.getContext('2d');
+        
         function render() {
             ctx.clearRect(0, 0, cvs.width, cvs.height);
-            edges.forEach(e => {
+            const allEdges = [...edges, ...customEdges];
+            allEdges.forEach(e => {
                 ctx.beginPath();
-                ctx.strokeStyle = usedEdges.includes(e.id) ? '#FF6B6B' : '#E2E8F0';
-                ctx.lineWidth = usedEdges.includes(e.id) ? 22 : 12;
+                const isCustom = customEdges.includes(e);
+                if (usedEdges.includes(e.id)) { ctx.strokeStyle = '#FF6B6B'; ctx.lineWidth = 24; } 
+                else { ctx.strokeStyle = isCustom ? '#60A5FA' : '#E2E8F0'; ctx.lineWidth = isCustom ? 16 : 12; }
                 ctx.lineCap = 'round';
                 ctx.moveTo(nodes[e.u].x, nodes[e.u].y);
                 ctx.lineTo(nodes[e.v].x, nodes[e.v].y);
                 ctx.stroke();
+                if (isCustom && !usedEdges.includes(e.id)) { ctx.setLineDash([5, 5]); ctx.strokeStyle = '#FFF'; ctx.lineWidth = 2; ctx.stroke(); ctx.setLineDash([]); }
             });
+
             Object.entries(nodes).forEach(([id, pos]) => {
                 const isHidden = hidePrefix && id.startsWith('_');
                 ctx.beginPath();
-                ctx.arc(pos.x, pos.y, isHidden ? 6 : 20, 0, Math.PI * 2);
-                const deg = edges.filter(e => e.u === id || e.v === id).length;
-                let color = (deg % 2 !== 0) ? '#FF6B6B' : '#4ECDC4';
-                if (usedEdges.some(eid => edges.find(ed=>ed.id===eid && (ed.u===id || ed.v===id)))) {
-                   color = (deg % 2 !== 0) ? '#D64545' : '#3BAEA5';
-                }
-                ctx.fillStyle = isHidden ? '#E2E8F0' : color;
+                ctx.arc(pos.x, pos.y, isHidden ? 6 : 22, 0, Math.PI * 2);
+                const currentEdges = allEdges.filter(e => e.u === id || e.v === id);
+                const deg = currentEdges.length;
+                if (task3Mode === 'build' && buildStartNode === id) { ctx.fillStyle = '#FBBF24'; ctx.shadowBlur = 15; ctx.shadowColor = '#FBBF24'; } 
+                else { ctx.fillStyle = isHidden ? '#E2E8F0' : (deg % 2 !== 0 ? '#FF6B6B' : '#4ECDC4'); ctx.shadowBlur = 0; }
                 ctx.fill();
-                if (!isHidden) {
-                    ctx.fillStyle = '#FFF'; ctx.font = 'bold 18px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                    ctx.fillText(id, pos.x, pos.y);
-                }
+                if (!isHidden) { ctx.fillStyle = '#FFF'; ctx.font = 'bold 20px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(id, pos.x, pos.y); }
             });
         }
 
-        const handleMove = (ex, ey) => {
+        const handleInteraction = (ex, ey) => {
             const rect = cvs.getBoundingClientRect();
-            const x = ex - rect.left; const y = ey - rect.top;
+            const x = (ex - rect.left) * (cvs.width / rect.width);
+            const y = (ey - rect.top) * (cvs.height / rect.height);
             const hit = Object.keys(nodes).find(k => Math.hypot(nodes[k].x - x, nodes[k].y - y) < 40);
-            if (hit && hit !== lastNode) {
-                if (lastNode === null) lastNode = hit;
-                else {
-                    const edge = edges.find(ed => !usedEdges.includes(ed.id) && 
-                        ((ed.u === lastNode && ed.v === hit) || (ed.v === lastNode && ed.u === hit)));
-                    if (edge) { usedEdges.push(edge.id); lastNode = hit; render(); }
+            if (!hit) return;
+
+            if (task3Mode === 'draw') {
+                if (hit !== lastNode) {
+                    if (lastNode === null) lastNode = hit;
+                    else {
+                        const allEdges = [...edges, ...customEdges];
+                        const edge = allEdges.find(ed => !usedEdges.includes(ed.id) && ((ed.u === lastNode && ed.v === hit) || (ed.v === lastNode && ed.u === hit)));
+                        if (edge) { usedEdges.push(edge.id); lastNode = hit; render(); }
+                    }
                 }
+            } else if (task3Mode === 'build' && currentTask === 3) {
+                if (!buildStartNode) buildStartNode = hit;
+                else {
+                    if (buildStartNode !== hit) {
+                        const allEdges = [...edges, ...customEdges];
+                        const exists = allEdges.some(e => (e.u === buildStartNode && e.v === hit) || (e.u === hit && e.v === buildStartNode));
+                        if (!exists) {
+                            const newId = 100 + customEdges.length;
+                            customEdges.push({ id: newId, u: buildStartNode, v: hit });
+                            document.getElementById('bridgeInput').value = `${buildStartNode} 和 ${hit}`;
+                        }
+                    }
+                    buildStartNode = null;
+                }
+                render();
             }
         };
-        cvs.onmousedown = (e) => { isDrawing = true; handleMove(e.clientX, e.clientY); };
-        cvs.ontouchstart = (e) => { isDrawing = true; handleMove(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); };
-        cvs.onmousemove = (e) => { if(isDrawing) handleMove(e.clientX, e.clientY); };
-        cvs.ontouchmove = (e) => { if(isDrawing) handleMove(e.touches[0].clientX, e.touches[0].clientY); };
+
+        cvs.onmousedown = (e) => { isDrawing = true; handleInteraction(e.clientX, e.clientY); };
+        cvs.ontouchstart = (e) => { isDrawing = true; handleInteraction(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); };
+        cvs.onmousemove = (e) => { if(isDrawing && task3Mode === 'draw') handleInteraction(e.clientX, e.clientY); };
+        cvs.ontouchmove = (e) => { if(isDrawing && task3Mode === 'draw') handleInteraction(e.touches[0].clientX, e.touches[0].clientY); };
         window.onmouseup = window.ontouchend = () => { isDrawing = false; lastNode = null; };
         render();
     }
@@ -426,7 +528,7 @@
     }
 
     function resetTask1() { usedEdges = []; initTask1(); }
-    function resetTask3() { usedEdges = []; initTask3(); }
+    function resetTask3() { usedEdges = []; customEdges = []; task3Mode = 'draw'; document.getElementById('bridgeInput').value = ''; initTask3(); toggleTask3Mode('draw'); }
     window.onload = () => showTask(1);
 </script>
 </body>
